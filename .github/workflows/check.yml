@@ -22,7 +22,7 @@ jobs:
       run: |
         # Grab latest release from official repostiory and latest release version from this repostiory
         LATEST_LIBNVIDIA="$(curl -u ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} -s https://api.github.com/repos/NVIDIA/libnvidia-container/tags | jq -r '.[] | select(.name | test("-(rc|beta|alpha)"; "i") | not) | .name' | sort -V | tail -1 | sed 's/^v//')"
-        CURRENT_LIBNVIDIA="$(curl -u ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} -s https://api.github.com/repos/ich777/mos-libnvidia-container/releases/latest | jq -r '.tag_name' | sed 's/^v//')"
+        CURRENT_LIBNVIDIA="$(curl -u ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} -s https://api.github.com/repos/${{ github.repository }}/mos-libnvidia-container/releases/latest | jq -r '.tag_name' | sed 's/^v//')"
 
         # Check if one of the versions is empty
         if ! echo "${LATEST_LIBNVIDIA}" | grep -qE '^\b[0-9]+(\.[0-9]+)*\b$'; then
@@ -57,7 +57,7 @@ jobs:
         docker run --rm \
           -v ${{ github.workspace }}/output:/tmp \
           -e LIBNVIDIA_VERSION=${LIBNVIDIA_VERSION} \
-          ghcr.io/ich777/mos-libnvidia-container:buster
+          ghcr.io/${{ github.repository }}/mos-libnvidia-container:buster
 
     - name: Create Release
       if: env.CREATE_RELEASE == 'true' && success()
