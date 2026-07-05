@@ -41,7 +41,7 @@ jobs:
         docker run --rm \
           -v ${{ github.workspace }}/output:/tmp \
           -e LIBNVIDIA_VERSION=${LIBNVIDIA_VERSION} \
-          ghcr.io/${{ github.repository }}/mos-libnvidia-container:buster_arm
+          ghcr.io/${{ github.repository_owner }}/mos-libnvidia-container:buster_arm
 
     - name: Create and Upload Release
       uses: softprops/action-gh-release@v2
